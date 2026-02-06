@@ -39,3 +39,6 @@
 *   **Wirtschaftsinformatik-Fokus:** "Last-Mover-Vorteil". Warte nicht, bis dein Code perfekt ist, aber sorge dafür, dass dein Automatisierungsgrad so hoch ist, dass du schneller iterieren kannst als jeder Konkurrent.
 
 > **Merksatz:** "Automatisierung ist der Zinseszins der Softwareentwicklung."
+
+
+pydantic

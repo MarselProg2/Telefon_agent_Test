@@ -1,4 +1,4 @@
-from google.adk.agents import Agent
+from google.adk.agents import Agent, SequentialAgent
 from google.adk.tools.mcp_tool import McpToolset
 from google.adk.tools.mcp_tool.mcp_session_manager import StdioConnectionParams
 from mcp import StdioServerParameters
@@ -6,13 +6,15 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-
+GEMINI_MODEL = "gemini-2.0-flash"
 ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
 agent_id = os.getenv("AGENT_ID")
 to_number = os.getenv("TO_NUMBER")
 agent_phone_number_id = os.getenv("AGENT_PHONE_NUMBER_ID")
-root_agent = Agent(
-    model="gemini-2.0-flash",
+
+
+telefon_agent = Agent(
+    model=GEMINI_MODEL,
     name="elevenlabs_agent",
     instruction=f"""
     Du bist ein hilfreicher Assistent.
@@ -43,4 +45,28 @@ root_agent = Agent(
             ),
         )
     ],
+    output_key="displaying_order"
 )
+
+cordinator_agent = Agent(
+    name="cordinator_agent",
+    model=GEMINI_MODEL,
+    instruction="""
+    Du bist ein 'Order Extractor'.
+    Dein Input ist der Output des vorherigen Agenten (Telefon-Agent).
+    Deine Aufgabe:
+    1. Analysiere den Text nach Bestellungen (Gerichte, Getränke).
+    2. Extrahiere diese Informationen SAUBER und knapp.
+    3. Gib NUR die Bestellung zurück (z.B. als JSON oder Liste), ohne Chat-Floskeln.
+    
+    Beispiel Input: "Ja hallo, ich hätte gerne eine Pizza Salami und eine Cola."
+    Dein Output: {"items": ["Pizza Salami", "Cola"]}
+    """,
+    description="Extrahiert Bestellungen aus dem Gespräch.",
+    output_key="order_details"
+)
+telefon_pipeline_agent= SequentialAgent(
+    name="telefon_pipeline_agent",
+    agents=[telefon_agent,cordinator_agent],
+)
+root_agent = telefon_pipeline_agent

@@ -2,3 +2,5 @@
 .venv
 adk
 uv.lock
+__pycache__
+todo.md
