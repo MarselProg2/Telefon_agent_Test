@@ -14,15 +14,16 @@ Wir folgen dem iterativen Lernplan: Erst Prototyp, dann Profi-Refactoring.
     - [ ] Testanrufe durchführen und scheitern lassen (Gedächtnis, Validierung)
     - [ ] Log-Analyse via ElevenLabs (`list_conversations`)
 
-- [ ] **Phase 3: Der "Last Mover" Umbau**
-    - [ ] **Datenbank**: Docker Compose (Postgres + pgvector) aufsetzen
-    - [ ] **PUMA**: Kontext-Gedächtnis implementieren (User erkennen)
-    - [x] **Typensicherheit**: Pydantic Models (`Order`) einführen
+- [x] **Phase 3: Der "Last Mover" Umbau (Infrastruktur)**
+    - [x] **Typensicherheit**: Pydantic Models (`Order`, `Reservation`) in `schemas.py`
+    - [x] **Datenbank**: Supabase/Postgres Integration via McpToolset (Option A)
+    - [x] **Reservierung**: Check via SQL Query (kein fiktives Tool mehr)
     - [ ] **RAG**: Speisekarte als Vektoren laden (`add_knowledge_base_to_agent`)
 
-- [ ] **Phase 4: Enterprise Grade**
-    - [ ] **ReFORCE**: Validierungs-Loop einbauen (Verfügbarkeit prüfen)
-    - [ ] **Dashboard**: Kosten-Tracking (Gradio)
+- [ ] **Phase 4: Workflow & Enterprise Grade**
+    - [ ] **Pipeline**: `bestell_pipeline` (SequentialAgent) implementieren
+    - [ ] **ReFORCE**: Human-in-the-Loop LoopAgent (Koch-Bestätigung)
+    - [ ] **Dashboard**: Gradio Dashboard für Bestellübersicht
     - [ ] **CI/CD**: GitHub Actions Pipeline
 
 ---
